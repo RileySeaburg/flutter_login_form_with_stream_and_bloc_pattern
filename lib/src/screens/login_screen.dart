@@ -5,28 +5,34 @@
 
 import 'package:flutter/material.dart';
 import '../blocs/bloc.dart';
+import '../blocs/provider.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    /// Create a new bloc with the given [initialState].
+    /// bloc is only available in the build method.
+    /// bloc is a singleton.
+    final bloc = Provider.of(context);
+
     return Container(
         margin: const EdgeInsets.all(20),
 
         child: Column(
           children: [
             Container(margin: const EdgeInsets.only(top: 50.0)),
-            emailField(),
+            emailField(bloc),
             Container(margin: const EdgeInsets.only(top: 25.0)),
-            passwordField(),
+            passwordField(bloc),
             Container(margin: const EdgeInsets.only(top: 25.0)),
             submitButton(),
           ],
         ));
   }
 
-  Widget emailField() {
+  Widget emailField(Bloc bloc) {
     return StreamBuilder(
         stream: bloc.email,
         builder: (context, snapshot) {
@@ -47,7 +53,7 @@ class LoginScreen extends StatelessWidget {
   }
 
   /// Widget for the password field
-  Widget passwordField() {
+  Widget passwordField(Bloc bloc) {
     return StreamBuilder(
         stream: bloc.password,
         builder: (context, snapshot) {

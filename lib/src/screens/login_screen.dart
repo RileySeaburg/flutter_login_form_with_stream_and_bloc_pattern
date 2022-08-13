@@ -19,7 +19,6 @@ class LoginScreen extends StatelessWidget {
 
     return Container(
         margin: const EdgeInsets.all(20),
-
         child: Column(
           children: [
             Container(margin: const EdgeInsets.only(top: 50.0)),
@@ -27,7 +26,7 @@ class LoginScreen extends StatelessWidget {
             Container(margin: const EdgeInsets.only(top: 25.0)),
             passwordField(bloc),
             Container(margin: const EdgeInsets.only(top: 25.0)),
-            submitButton(),
+            submitButton(bloc),
           ],
         ));
   }
@@ -69,13 +68,16 @@ class LoginScreen extends StatelessWidget {
         });
   }
 
-  Widget submitButton() {
-    return Container(
-      margin: const EdgeInsets.only(top: 20),
-      child: ElevatedButton(
-        onPressed: () {},
-        child: const Text('Submit'),
-      ),
-    );
+  Widget submitButton(Bloc bloc) {
+    return StreamBuilder(
+        stream: bloc.submitValid,
+        builder: (context, snapshot) {
+          return ElevatedButton(
+            /// There is a known issue that the submit button apears 
+            /// to be active even when the form is invalid.
+            onPressed: snapshot.hasData ? bloc.submit : null,
+            child: const Text('Login'),
+          );
+        });
   }
 }
